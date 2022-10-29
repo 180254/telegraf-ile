@@ -25,7 +25,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": 4,
-  "iteration": 1667039990879,
+  "iteration": 1667048759839,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -87,7 +87,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.13",
+      "pluginVersion": "8.5.14",
       "targets": [
         {
           "datasource": {
@@ -168,7 +168,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.13",
+      "pluginVersion": "8.5.14",
       "targets": [
         {
           "datasource": {
@@ -249,7 +249,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.13",
+      "pluginVersion": "8.5.14",
       "targets": [
         {
           "datasource": {
@@ -330,7 +330,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.13",
+      "pluginVersion": "8.5.14",
       "targets": [
         {
           "datasource": {
@@ -411,7 +411,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.13",
+      "pluginVersion": "8.5.14",
       "targets": [
         {
           "datasource": {
@@ -779,6 +779,30 @@
             "matcher": {
               "id": "byFrameRefID",
               "options": "B"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              }
+            ]
+          },
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "max(temp_input)"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
             },
             "properties": [
               {
@@ -1929,7 +1953,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "nuc-vm",
           "value": "nuc-vm"
         },
@@ -1952,7 +1976,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "eno1",
           "value": "eno1"
         },
@@ -2021,7 +2045,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "ile-questdb",
           "value": "ile-questdb"
         },
@@ -2052,6 +2076,6 @@
   "timezone": "",
   "title": "telegraf",
   "uid": "telegraf",
-  "version": 18,
+  "version": 23,
   "weekStart": ""
 }
