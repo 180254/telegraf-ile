@@ -25,7 +25,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": 4,
-  "iteration": 1667048759839,
+  "iteration": 1667936115544,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -512,7 +512,20 @@
           },
           "unit": "percent"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "throttle_percentage"
+            },
+            "properties": [
+              {
+                "id": "custom.axisSoftMax",
+                "value": 0.1
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
@@ -542,8 +555,39 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n    $__time(timestamp),\n    max(usage_active) as cpu_usage_active\nfrom\n    telegraf_cpu\nwhere\n    host = '$host'\n    and cpu = 'cpu-total'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
+          "rawSql": "select\n    $__time(timestamp),\n    avg(usage_active) as cpu_usage_active\nfrom\n    telegraf_cpu\nwhere\n    host = '$host'\n    and cpu = 'cpu-total'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
           "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "with\n  telegraf_linux_cpu2 as ((\n    select timestamp, sum(throttle_total_time) as throttle_total_time\n    from telegraf_linux_cpu\n    where\n      host = '$host'\n      and $__timeFilter(timestamp)\n  ) timestamp(timestamp))\nselect\n  $__time(timestamp),\n  throttle_time_ms*1.0/(diff_seconds*1000.0)*100.0 as throttle_percentage\nfrom (\n  select\n    timestamp,\n    sum(throttle_time_ms) as throttle_time_ms,\n    sum(diff_seconds) as diff_seconds\n  from (\n    select\n      t1.timestamp, \n      (case when t1.throttle_total_time >= t2.throttle_total_time then t1.throttle_total_time-t2.throttle_total_time else null end) as throttle_time_ms,\n      datediff('s', t1.timestamp, t2.timestamp) as diff_seconds\n    from telegraf_linux_cpu2 t1 \n    lt join telegraf_linux_cpu2 t2\n  )\n  sample by $__interval fill(null)\n)\n",
+          "refId": "B",
           "select": [
             [
               {
@@ -650,7 +694,38 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n    $__time(timestamp),\n    max(used_percent) as mem_used_percent\nfrom\n    telegraf_mem\nwhere\n    host = '$host'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
+          "rawSql": "select\n    $__time(timestamp),\n    avg(used_percent) as mem_used_percent\nfrom\n    telegraf_mem\nwhere\n    host = '$host'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n    $__time(timestamp),\n    100.0-avg(available_percent) as mem_notavailable_percent\nfrom\n    telegraf_mem\nwhere\n    host = '$host'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
           "refId": "B",
           "select": [
             [
@@ -876,7 +951,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n    $__time(timestamp),\n    max(temp_input) as value,\n    concat(chip, '-', feature) as metric\nfrom\n    telegraf_sensors\nwhere\n    host = '$host'\n    and temp_input is not null\n    and temp_input > 0\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)\n",
+          "rawSql": "select\n    $__time(timestamp),\n    avg(temp_input) as value,\n    concat(chip, '-', feature) as metric\nfrom\n    telegraf_sensors\nwhere\n    host = '$host'\n    and temp_input is not null\n    and temp_input > 0\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)\n",
           "refId": "B",
           "select": [
             [
@@ -1128,7 +1203,7 @@
               "group": [],
               "metricColumn": "none",
               "rawQuery": true,
-              "rawSql": "select\n    $__time(timestamp),\n    max(tcp_established) as tcp_established,\n    max(tcp_syn_sent) as tcp_syn_sent,\n    max(tcp_syn_recv) as tcp_syn_recv,\n    max(tcp_fin_wait1) as tcp_fin_wait1,\n    max(tcp_fin_wait2) as tcp_fin_wait2,\n    max(tcp_time_wait) as tcp_time_wait,\n    max(tcp_close) as tcp_close,\n    max(tcp_close_wait) as tcp_close_wait,\n    max(tcp_last_ack) as tcp_last_ack,\n    max(tcp_listen) as tcp_listen,\n    max(tcp_closing) as tcp_closing,\n    max(tcp_none) as tcp_none,\n    max(udp_socket) as udp_socket\nfrom\n    telegraf_netstat\nwhere\n    host = '$host'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
+              "rawSql": "select\n    $__time(timestamp),\n    avg(tcp_established) as tcp_established,\n    avg(tcp_syn_sent) as tcp_syn_sent,\n    avg(tcp_syn_recv) as tcp_syn_recv,\n    avg(tcp_fin_wait1) as tcp_fin_wait1,\n    avg(tcp_fin_wait2) as tcp_fin_wait2,\n    avg(tcp_time_wait) as tcp_time_wait,\n    avg(tcp_close) as tcp_close,\n    avg(tcp_close_wait) as tcp_close_wait,\n    avg(tcp_last_ack) as tcp_last_ack,\n    avg(tcp_listen) as tcp_listen,\n    avg(tcp_closing) as tcp_closing,\n    avg(tcp_none) as tcp_none,\n    avg(udp_socket) as udp_socket\nfrom\n    telegraf_netstat\nwhere\n    host = '$host'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
               "refId": "A",
               "select": [
                 [
@@ -1225,7 +1300,7 @@
             "h": 7,
             "w": 8,
             "x": 0,
-            "y": 15
+            "y": 22
           },
           "id": 17,
           "options": {
@@ -1331,7 +1406,7 @@
             "h": 7,
             "w": 8,
             "x": 8,
-            "y": 15
+            "y": 22
           },
           "id": 19,
           "options": {
@@ -1469,7 +1544,7 @@
             "h": 7,
             "w": 8,
             "x": 16,
-            "y": 15
+            "y": 22
           },
           "id": 18,
           "options": {
@@ -1525,7 +1600,7 @@
               "hide": false,
               "metricColumn": "none",
               "rawQuery": true,
-              "rawSql": "select\n    $__time(timestamp),\n    max(iops_in_progress) as iops_in_progress\nfrom\n    telegraf_diskio\nwhere\n    host = '$host'\n    and name = '$diskio_name'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
+              "rawSql": "select\n    $__time(timestamp),\n    avg(iops_in_progress) as iops_in_progress\nfrom\n    telegraf_diskio\nwhere\n    host = '$host'\n    and name = '$diskio_name'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
               "refId": "B",
               "select": [
                 [
@@ -1652,7 +1727,7 @@
               "group": [],
               "metricColumn": "none",
               "rawQuery": true,
-              "rawSql": "select\n    $__time(timestamp),\n    max(usage_percent) as usage_percent\nfrom\n    telegraf_docker_container_cpu\nwhere\n    host = '$host'\n    and container_name = '$docker_container_name'\n    and cpu = 'cpu-total'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
+              "rawSql": "select\n    $__time(timestamp),\n    avg(usage_percent) as usage_percent\nfrom\n    telegraf_docker_container_cpu\nwhere\n    host = '$host'\n    and container_name = '$docker_container_name'\n    and cpu = 'cpu-total'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
               "refId": "A",
               "select": [
                 [
@@ -1925,6 +2000,337 @@
       ],
       "title": "docker",
       "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 31,
+      "panels": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              },
+              "unit": "watt"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 0,
+            "y": 17
+          },
+          "id": 34,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "postgres",
+                "uid": "${datasource}"
+              },
+              "format": "time_series",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "select\n    $__time(timestamp),\n    avg(power_draw) as power_draw\nfrom\n    telegraf_nvidia_smi\nwhere\n    host = '$host'\n    and name = '$nvidia_name'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "timeColumn": "time",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "title": "power",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMax": 100,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 8,
+            "y": 17
+          },
+          "id": 33,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "postgres",
+                "uid": "${datasource}"
+              },
+              "format": "time_series",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "select\n    $__time(timestamp),\n    avg(utilization_gpu) as utilization_gpu,\n    avg(utilization_memory) as utilization_memory,\n    avg(utilization_encoder) as utilization_encoder,\n    avg(utilization_decoder) as utilization_decoder\nfrom\n    telegraf_nvidia_smi\nwhere\n    host = '$host'\n    and name = '$nvidia_name'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "timeColumn": "time",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "title": "utilizations",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMax": 90,
+                "axisSoftMin": 40,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              },
+              "unit": "celsius"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 16,
+            "y": 17
+          },
+          "id": 32,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "postgres",
+                "uid": "${datasource}"
+              },
+              "format": "time_series",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "select\n    $__time(timestamp),\n    avg(temperature_gpu) as temperature_gpu\nfrom\n    telegraf_nvidia_smi\nwhere\n    host = '$host'\n    and name = '$nvidia_name'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "timeColumn": "time",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "title": "sensors",
+          "type": "timeseries"
+        }
+      ],
+      "title": "nvidia",
+      "type": "row"
     }
   ],
   "refresh": "",
@@ -1953,7 +2359,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "nuc-vm",
           "value": "nuc-vm"
         },
@@ -1976,7 +2382,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "eno1",
           "value": "eno1"
         },
@@ -2045,7 +2451,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "ile-questdb",
           "value": "ile-questdb"
         },
@@ -2053,13 +2459,37 @@
           "type": "postgres",
           "uid": "${datasource}"
         },
-        "definition": "select container_name interface from telegraf_docker_container_cpu where host = '$host' and $__timeFilter(timestamp)",
+        "definition": "select distinct container_name from telegraf_docker_container_cpu where host = '$host' and $__timeFilter(timestamp)",
         "hide": 0,
         "includeAll": false,
         "multi": false,
         "name": "docker_container_name",
         "options": [],
-        "query": "select container_name interface from telegraf_docker_container_cpu where host = '$host' and $__timeFilter(timestamp)",
+        "query": "select distinct container_name from telegraf_docker_container_cpu where host = '$host' and $__timeFilter(timestamp)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "isNone": true,
+          "selected": false,
+          "text": "None",
+          "value": ""
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "${datasource}"
+        },
+        "definition": "select distinct name from telegraf_nvidia_smi where host = '$host' and $__timeFilter(timestamp)",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "nvidia_name",
+        "options": [],
+        "query": "select distinct name from telegraf_nvidia_smi where host = '$host' and $__timeFilter(timestamp)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2076,6 +2506,6 @@
   "timezone": "",
   "title": "telegraf",
   "uid": "telegraf",
-  "version": 23,
+  "version": 32,
   "weekStart": ""
 }
