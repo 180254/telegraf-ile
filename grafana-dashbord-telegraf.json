@@ -4,13 +4,14 @@
       {
         "builtIn": 1,
         "datasource": {
-          "type": "grafana",
-          "uid": "-- Grafana --"
+          "type": "datasource",
+          "uid": "grafana"
         },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "rawQuery": "SELECT\n  extract(epoch from time_column) AS time,\n  text_column as text,\n  tags_column as tags\nFROM\n  metric_table\nWHERE\n  $__timeFilter(time_column)\n",
         "target": {
           "limit": 100,
           "matchAny": false,
@@ -25,7 +26,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": 4,
-  "iteration": 1667936115544,
+  "iteration": 1668340143154,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -586,7 +587,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "with\n  telegraf_linux_cpu2 as ((\n    select timestamp, sum(throttle_total_time) as throttle_total_time\n    from telegraf_linux_cpu\n    where\n      host = '$host'\n      and $__timeFilter(timestamp)\n  ) timestamp(timestamp))\nselect\n  $__time(timestamp),\n  throttle_time_ms*1.0/(diff_seconds*1000.0)*100.0 as throttle_percentage\nfrom (\n  select\n    timestamp,\n    sum(throttle_time_ms) as throttle_time_ms,\n    sum(diff_seconds) as diff_seconds\n  from (\n    select\n      t1.timestamp, \n      (case when t1.throttle_total_time >= t2.throttle_total_time then t1.throttle_total_time-t2.throttle_total_time else null end) as throttle_time_ms,\n      datediff('s', t1.timestamp, t2.timestamp) as diff_seconds\n    from telegraf_linux_cpu2 t1 \n    lt join telegraf_linux_cpu2 t2\n  )\n  sample by $__interval fill(null)\n)\n",
+          "rawSql": "with\n  telegraf_linux_cpu2 as ((\n    select\n      timestamp,\n      sum(throttle_total_time) as throttle_total_time\n    from telegraf_linux_cpu\n    where\n      host = '$host'\n      and $__timeFilter(timestamp)\n  ) timestamp(timestamp))\nselect\n  $__time(timestamp),\n  throttle_time_ms*1.0/(diff_seconds*1000.0)*100.0 as throttle_percentage\nfrom (\n  select\n    timestamp,\n    sum(throttle_time_ms) as throttle_time_ms,\n    sum(diff_seconds) as diff_seconds\n  from (\n    select\n      t1.timestamp, \n      (case when t1.throttle_total_time >= t2.throttle_total_time then t1.throttle_total_time-t2.throttle_total_time else null end) as throttle_time_ms,\n      datediff('s', t1.timestamp, t2.timestamp) as diff_seconds\n    from telegraf_linux_cpu2 t1 \n    lt join telegraf_linux_cpu2 t2\n  )\n  sample by $__interval fill(null)\n)\n",
           "refId": "B",
           "select": [
             [
@@ -873,7 +874,7 @@
               "options": {
                 "mode": "exclude",
                 "names": [
-                  "max(temp_input)"
+                  "max_temp_input"
                 ],
                 "prefix": "All except:",
                 "readOnly": true
@@ -920,7 +921,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n    $__time(timestamp),\n    max(temp_input) as 'max(temp_input)'\nfrom\n    telegraf_sensors\nwhere\n    host = '$host'\n    and temp_input is not null\n    and temp_input > 0\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)\n",
+          "rawSql": "select\n  $__time(timestamp),\n  max(temp_input) as max_temp_input\nfrom (\n    select\n      timestamp,\n      avg(temp_input) as temp_input,\n      concat(chip, '-', feature) as metric\n    from\n      telegraf_sensors\n    where\n      host = '$host'\n      and temp_input is not null\n      and temp_input > 0\n      and $__timeFilter(timestamp)\n    sample by $__interval fill(null)\n)",
           "refId": "A",
           "select": [
             [
@@ -1060,6 +1061,31 @@
                     "value": "pps"
                   }
                 ]
+              },
+              {
+                "__systemRef": "hideSeriesFrom",
+                "matcher": {
+                  "id": "byNames",
+                  "options": {
+                    "mode": "exclude",
+                    "names": [
+                      "bytes_recv_rate",
+                      "bytes_sent_rate"
+                    ],
+                    "prefix": "All except:",
+                    "readOnly": true
+                  }
+                },
+                "properties": [
+                  {
+                    "id": "custom.hideFrom",
+                    "value": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": true
+                    }
+                  }
+                ]
               }
             ]
           },
@@ -1171,7 +1197,7 @@
                   }
                 ]
               },
-              "unit": "none"
+              "unit": "short"
             },
             "overrides": []
           },
@@ -1300,7 +1326,7 @@
             "h": 7,
             "w": 8,
             "x": 0,
-            "y": 22
+            "y": 15
           },
           "id": 17,
           "options": {
@@ -1406,7 +1432,7 @@
             "h": 7,
             "w": 8,
             "x": 8,
-            "y": 22
+            "y": 15
           },
           "id": 19,
           "options": {
@@ -1544,7 +1570,7 @@
             "h": 7,
             "w": 8,
             "x": 16,
-            "y": 22
+            "y": 15
           },
           "id": 18,
           "options": {
@@ -2506,6 +2532,6 @@
   "timezone": "",
   "title": "telegraf",
   "uid": "telegraf",
-  "version": 32,
+  "version": 38,
   "weekStart": ""
 }
