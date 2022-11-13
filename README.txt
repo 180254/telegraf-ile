@@ -9,7 +9,7 @@ docker run -d --restart=unless-stopped \
     --name=ile-telegraf \
     --user telegraf:$(stat -c '%g' /var/run/docker.sock) \
     -v "$PWD/telegraf.conf":/etc/telegraf/telegraf.conf:ro \
-    -e SOCKET_WRITER_ADDRESS=tcp://192.168.130.10:9009
+    -e SOCKET_WRITER_ADDRESS=tcp://192.168.130.10:9009 \
     -v /var/run/docker.sock:/var/run/docker.sock:ro \
     -v /:/hostfs:ro \
     -e HOST_ETC=/hostfs/etc \
