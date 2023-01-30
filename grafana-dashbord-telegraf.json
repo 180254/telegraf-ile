@@ -26,7 +26,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": 4,
-  "iteration": 1668340143154,
+  "iteration": 1675104577234,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -40,7 +40,7 @@
       },
       "id": 12,
       "panels": [],
-      "title": "stat",
+      "title": "sensors",
       "type": "row"
     },
     {
@@ -63,17 +63,18 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 3,
         "w": 3,
         "x": 0,
         "y": 1
       },
-      "id": 4,
+      "id": 7,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -88,7 +89,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.14",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -99,7 +100,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n    cast(0 as timestamp) as time,\n    round(last(load1), 2) as load1\nfrom\n    telegraf_system\nwhere\n    host = '$host'\n    and load1 is not null\n    and $__timeFilter(timestamp)",
+          "rawSql": "select\n    cast(0 as timestamp) as time,\n    last(load1) as load1\nfrom\n    telegraf_system\nwhere\n    host = '$host'\n    and load1 is not null\n    and $__timeFilter(timestamp)",
           "refId": "A",
           "select": [
             [
@@ -123,664 +124,6 @@
       ],
       "title": "load1",
       "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 3,
-        "y": 1
-      },
-      "id": 5,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.5.14",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${datasource}"
-          },
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "select\n    cast(0 as timestamp) as time,\n    round(last(load5), 2) as load5\nfrom\n    telegraf_system\nwhere\n    host = '$host'\n    and load5 is not null\n    and $__timeFilter(timestamp)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "load5",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 6,
-        "y": 1
-      },
-      "id": 6,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.5.14",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${datasource}"
-          },
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "select\n    cast(0 as timestamp) as time,\n    round(last(load15), 2) as load15\nfrom\n    telegraf_system\nwhere\n    host = '$host'\n    and load5 is not null\n    and $__timeFilter(timestamp)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "load15",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 9,
-        "y": 1
-      },
-      "id": 7,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.5.14",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${datasource}"
-          },
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "select\n    cast(0 as timestamp) as time,\n    last(uptime) as uptime\nfrom\n    telegraf_system\nwhere\n    host = '$host'\n    and uptime is not null\n    and $__timeFilter(timestamp)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "uptime",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "celsius"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 12,
-        "y": 1
-      },
-      "id": 16,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.5.14",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${datasource}"
-          },
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "select\n  cast(0 as timestamp) as time,\n  max(temp_input) as temp_input\nfrom (\n    select\n      last(temp_input) as temp_input,\n      concat(chip, '-', feature) as metric\n    from\n      telegraf_sensors\n    where\n      host = '$host'\n      and temp_input is not null\n      and temp_input > 0\n      and $__timeFilter(timestamp)\n)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "sensors",
-      "type": "stat"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 5
-      },
-      "id": 10,
-      "panels": [],
-      "title": "sys",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisSoftMax": 100,
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "throttle_percentage"
-            },
-            "properties": [
-              {
-                "id": "custom.axisSoftMax",
-                "value": 0.1
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 0,
-        "y": 6
-      },
-      "id": 2,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${datasource}"
-          },
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "select\n    $__time(timestamp),\n    avg(usage_active) as cpu_usage_active\nfrom\n    telegraf_cpu\nwhere\n    host = '$host'\n    and cpu = 'cpu-total'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${datasource}"
-          },
-          "format": "time_series",
-          "group": [],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "with\n  telegraf_linux_cpu2 as ((\n    select\n      timestamp,\n      sum(throttle_total_time) as throttle_total_time\n    from telegraf_linux_cpu\n    where\n      host = '$host'\n      and $__timeFilter(timestamp)\n  ) timestamp(timestamp))\nselect\n  $__time(timestamp),\n  throttle_time_ms*1.0/(diff_seconds*1000.0)*100.0 as throttle_percentage\nfrom (\n  select\n    timestamp,\n    sum(throttle_time_ms) as throttle_time_ms,\n    sum(diff_seconds) as diff_seconds\n  from (\n    select\n      t1.timestamp, \n      (case when t1.throttle_total_time >= t2.throttle_total_time then t1.throttle_total_time-t2.throttle_total_time else null end) as throttle_time_ms,\n      datediff('s', t1.timestamp, t2.timestamp) as diff_seconds\n    from telegraf_linux_cpu2 t1 \n    lt join telegraf_linux_cpu2 t2\n  )\n  sample by $__interval fill(null)\n)\n",
-          "refId": "B",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "cpu",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisSoftMax": 100,
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 8,
-        "y": 6
-      },
-      "id": 14,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${datasource}"
-          },
-          "format": "time_series",
-          "group": [],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "select\n    $__time(timestamp),\n    avg(used_percent) as mem_used_percent\nfrom\n    telegraf_mem\nwhere\n    host = '$host'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${datasource}"
-          },
-          "format": "time_series",
-          "group": [],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "select\n    $__time(timestamp),\n    100.0-avg(available_percent) as mem_notavailable_percent\nfrom\n    telegraf_mem\nwhere\n    host = '$host'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
-          "refId": "B",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${datasource}"
-          },
-          "format": "time_series",
-          "group": [],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "select\n    $__time(timestamp),\n    avg(used_percent) as swap_used_percent\nfrom\n    telegraf_swap\nwhere\n    host = '$host'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
-          "refId": "C",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "mem&swap",
-      "type": "timeseries"
     },
     {
       "datasource": {
@@ -896,8 +239,8 @@
       "gridPos": {
         "h": 7,
         "w": 8,
-        "x": 16,
-        "y": 6
+        "x": 3,
+        "y": 1
       },
       "id": 15,
       "options": {
@@ -978,12 +321,608 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 0,
+        "y": 4
+      },
+      "id": 16,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.15",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n  cast(0 as timestamp) as time,\n  max(temp_input) as temp_input\nfrom (\n    select\n      last(temp_input) as temp_input,\n      concat(chip, '-', feature) as metric\n    from\n      telegraf_sensors\n    where\n      host = '$host'\n      and temp_input is not null\n      and temp_input > 0\n      and $__timeFilter(timestamp)\n)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "sensors",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 10,
+      "panels": [],
+      "title": "sys",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 100,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "throttle_percentage"
+            },
+            "properties": [
+              {
+                "id": "custom.axisSoftMax",
+                "value": 0.1
+              }
+            ]
+          },
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "cpu_usage_active"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 9
+      },
+      "id": 35,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n    $__time(timestamp),\n    avg(usage_active) as cpu_usage_active\nfrom\n    telegraf_cpu\nwhere\n    host = '$host'\n    and cpu = 'cpu-total'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "with\n  telegraf_linux_cpu2 as ((\n    select\n      timestamp,\n      sum(throttle_total_time) as throttle_total_time\n    from telegraf_linux_cpu\n    where\n      host = '$host'\n      and $__timeFilter(timestamp)\n  ) timestamp(timestamp))\nselect\n  $__time(timestamp),\n  throttle_time_ms*1.0/(diff_seconds*1000.0)*100.0 as throttle_percentage\nfrom (\n  select\n    timestamp,\n    sum(throttle_time_ms) as throttle_time_ms,\n    sum(diff_seconds) as diff_seconds\n  from (\n    select\n      t1.timestamp, \n      (case when t1.throttle_total_time >= t2.throttle_total_time then t1.throttle_total_time-t2.throttle_total_time else null end) as throttle_time_ms,\n      datediff('s', t1.timestamp, t2.timestamp) as diff_seconds\n    from telegraf_linux_cpu2 t1 \n    lt join telegraf_linux_cpu2 t2\n  )\n  sample by $__interval fill(null)\n)\n",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "cpu",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 8,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "load1"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 9
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n    $__time(timestamp),\n    avg(load1) as load1,\n    avg(load5) as load5,\n    avg(load15) as load15\nfrom\n    telegraf_system\nwhere\n    host = '$host'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "load",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 100,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "mem_notavailable_percent"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 9
+      },
+      "id": 14,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n    $__time(timestamp),\n    avg(used_percent) as mem_used_percent\nfrom\n    telegraf_mem\nwhere\n    host = '$host'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n    $__time(timestamp),\n    100.0-avg(available_percent) as mem_notavailable_percent\nfrom\n    telegraf_mem\nwhere\n    host = '$host'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n    $__time(timestamp),\n    avg(used_percent) as swap_used_percent\nfrom\n    telegraf_swap\nwhere\n    host = '$host'\n    and $__timeFilter(timestamp)\nsample by $__interval fill(null)",
+          "refId": "C",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "mem&swap",
+      "type": "timeseries"
+    },
+    {
       "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 16
       },
       "id": 29,
       "panels": [
@@ -1093,7 +1032,7 @@
             "h": 7,
             "w": 8,
             "x": 0,
-            "y": 14
+            "y": 12
           },
           "id": 8,
           "options": {
@@ -1205,7 +1144,7 @@
             "h": 7,
             "w": 8,
             "x": 8,
-            "y": 14
+            "y": 12
           },
           "id": 13,
           "options": {
@@ -1264,7 +1203,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 17
       },
       "id": 27,
       "panels": [
@@ -1326,7 +1265,7 @@
             "h": 7,
             "w": 8,
             "x": 0,
-            "y": 15
+            "y": 13
           },
           "id": 17,
           "options": {
@@ -1432,7 +1371,7 @@
             "h": 7,
             "w": 8,
             "x": 8,
-            "y": 15
+            "y": 13
           },
           "id": 19,
           "options": {
@@ -1570,7 +1509,7 @@
             "h": 7,
             "w": 8,
             "x": 16,
-            "y": 15
+            "y": 13
           },
           "id": 18,
           "options": {
@@ -1667,7 +1606,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 18
       },
       "id": 21,
       "panels": [
@@ -1729,7 +1668,7 @@
             "h": 7,
             "w": 8,
             "x": 0,
-            "y": 16
+            "y": 37
           },
           "id": 23,
           "options": {
@@ -1836,7 +1775,7 @@
             "h": 7,
             "w": 8,
             "x": 8,
-            "y": 16
+            "y": 37
           },
           "id": 24,
           "options": {
@@ -1967,7 +1906,7 @@
             "h": 7,
             "w": 8,
             "x": 16,
-            "y": 16
+            "y": 37
           },
           "id": 25,
           "options": {
@@ -2033,7 +1972,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 19
       },
       "id": 31,
       "panels": [
@@ -2093,7 +2032,7 @@
             "h": 7,
             "w": 8,
             "x": 0,
-            "y": 17
+            "y": 45
           },
           "id": 34,
           "options": {
@@ -2199,7 +2138,7 @@
             "h": 7,
             "w": 8,
             "x": 8,
-            "y": 17
+            "y": 45
           },
           "id": 33,
           "options": {
@@ -2305,7 +2244,7 @@
             "h": 7,
             "w": 8,
             "x": 16,
-            "y": 17
+            "y": 45
           },
           "id": 32,
           "options": {
@@ -2359,7 +2298,7 @@
       "type": "row"
     }
   ],
-  "refresh": "",
+  "refresh": false,
   "schemaVersion": 36,
   "style": "dark",
   "tags": [],
@@ -2532,6 +2471,6 @@
   "timezone": "",
   "title": "telegraf",
   "uid": "telegraf",
-  "version": 38,
+  "version": 49,
   "weekStart": ""
 }
