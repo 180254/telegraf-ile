@@ -26,7 +26,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": 4,
-  "iteration": 1675104577234,
+  "iteration": 1678625041256,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -89,7 +89,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.21",
       "targets": [
         {
           "datasource": {
@@ -365,7 +365,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.21",
       "targets": [
         {
           "datasource": {
@@ -2324,7 +2324,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "nuc-vm",
           "value": "nuc-vm"
         },
@@ -2440,7 +2440,7 @@
       {
         "current": {
           "isNone": true,
-          "selected": false,
+          "selected": true,
           "text": "None",
           "value": ""
         },
