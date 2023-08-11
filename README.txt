@@ -1,3 +1,7 @@
+obsolete, superseded by: https://github.com/180254/ile
+
+---
+
 "ile" project - my telegraf configuration.
 https://github.com/search?q=user%3A180254+ile
 
